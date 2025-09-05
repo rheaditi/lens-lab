@@ -3,7 +3,7 @@ import { BrowserRouter, useNavigate, useLocation } from 'react-router-dom';
 
 import { useDisclosure } from '@mantine/hooks';
 
-import { ActionIcon, Group } from '@mantine/core';
+import { ActionIcon, Group, Typography } from '@mantine/core';
 import { IconCameraCode } from '@tabler/icons-react';
 import { Tabs } from '@mantine/core';
 import AppRoutes from './Routes';
@@ -60,6 +60,9 @@ function App() {
             <Group h='100%' px='md' py={0}>
               {getCameraIcon(true)}
               {getCameraIcon(false)}
+              <Typography>
+                <h1>Lens Lab</h1>
+              </Typography>
               <TabNav />
             </Group>
           </AppShell.Header>
