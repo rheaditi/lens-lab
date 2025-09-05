@@ -1,35 +1,76 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { AppShell } from '@mantine/core';
+import { BrowserRouter, useNavigate, useLocation } from 'react-router-dom';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { useDisclosure } from '@mantine/hooks';
 
+import { ActionIcon, Group } from '@mantine/core';
+import { IconCameraCode } from '@tabler/icons-react';
+import { Tabs } from '@mantine/core';
+import AppRoutes from './Routes';
+
+function TabNav() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const value = pathname === '/' ? 'depth' : pathname.replace(/^\//, '');
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Tabs value={value} onChange={(value) => navigate(`/${value}`)}>
+      <Tabs.List>
+        <Tabs.Tab value='depth'>Depth of Field</Tabs.Tab>
+        <Tabs.Tab value='fov'>Field of View</Tabs.Tab>
+        <Tabs.Tab value='hyperfocal'>Hyperfocal</Tabs.Tab>
+      </Tabs.List>
+    </Tabs>
+  );
 }
 
-export default App
+function App() {
+  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+
+  const getCameraIcon = (mobile: boolean) => {
+    const opened = mobile ? mobileOpened : desktopOpened;
+    return (
+      <ActionIcon
+        variant='gradient'
+        aria-label='Gradient action icon'
+        gradient={{ from: 'grape', to: 'orange', deg: opened ? 180 : 90 }}
+        size='md'
+        {...(mobile ? { hiddenFrom: 'sm' } : { visibleFrom: 'sm' })}
+        onClick={mobile ? toggleMobile : toggleDesktop}
+      >
+        <IconCameraCode size={16} />
+      </ActionIcon>
+    );
+  };
+
+  return (
+    <BrowserRouter>
+      <AppShell
+        padding='md'
+        header={{ height: 60 }}
+        navbar={{
+          width: 300,
+          breakpoint: 'sm',
+          collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+        }}
+      >
+        <Tabs defaultValue='gallery'>
+          <AppShell.Header>
+            <Group h='100%' px='md' py={0}>
+              {getCameraIcon(true)}
+              {getCameraIcon(false)}
+              <TabNav />
+            </Group>
+          </AppShell.Header>
+          <AppShell.Navbar>CameraConfig</AppShell.Navbar>
+          <AppShell.Main>
+            <AppRoutes />
+          </AppShell.Main>
+        </Tabs>
+      </AppShell>
+    </BrowserRouter>
+  );
+}
+
+export default App;
