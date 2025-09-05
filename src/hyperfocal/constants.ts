@@ -5,4 +5,6 @@ export const DistanceUnitFactor = {
   in: 39.3701,
 } as const;
 
-export const DistanceUnit = Object.keys(DistanceUnitFactor) as (keyof typeof DistanceUnitFactor)[];
+export type DistanceUnit = keyof typeof DistanceUnitFactor;
+
+export const DistanceUnits = Object.keys(DistanceUnitFactor) as DistanceUnit[];

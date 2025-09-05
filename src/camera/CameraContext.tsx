@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { type ComboboxItem } from '@mantine/core';
-import { Cameras, Lenses, type CameraId, type LensId } from './constants';
+import { Cameras, Lenses, type CameraId, type LensId, Camera, Lens } from './constants';
 
 export type CameraConfig = {
   c1: CameraId;
@@ -10,6 +10,8 @@ export type CameraConfig = {
   setLens1: (lens: LensId) => void;
   setLens2: (lens: LensId) => void;
   lensOptions: ComboboxItem[];
+  cameraData: typeof Camera;
+  lensData: typeof Lens;
 };
 
 export const CameraContext = createContext<CameraConfig>({
@@ -20,4 +22,6 @@ export const CameraContext = createContext<CameraConfig>({
   setLens1: () => {},
   setLens2: () => {},
   lensOptions: [],
+  cameraData: Camera,
+  lensData: Lens,
 });

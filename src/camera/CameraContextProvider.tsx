@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { type ComboboxItem } from '@mantine/core';
-import { Cameras, Lenses } from './constants';
+import { Cameras, Lens, Lenses, Camera } from './constants';
 import { CameraContext } from './CameraContext';
 
 export const LensOptions: ComboboxItem[] = Lenses.map((lens) => ({
@@ -14,7 +14,17 @@ export const CameraContextProvider = ({ children }: { children: React.ReactNode 
 
   return (
     <CameraContext.Provider
-      value={{ c1: Cameras[0].id, c2: Cameras[1].id, lens1, lens2, setLens1, setLens2, lensOptions: LensOptions }}
+      value={{
+        c1: Cameras[0].id,
+        c2: Cameras[1].id,
+        lens1,
+        lens2,
+        setLens1,
+        setLens2,
+        lensOptions: LensOptions,
+        cameraData: Camera,
+        lensData: Lens,
+      }}
     >
       {children}
     </CameraContext.Provider>
